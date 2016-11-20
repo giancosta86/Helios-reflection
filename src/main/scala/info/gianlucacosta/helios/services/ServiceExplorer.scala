@@ -20,12 +20,9 @@
 
 package info.gianlucacosta.helios.services
 
-import java.io.File
 import java.lang.reflect.Modifier
-import java.net.URLClassLoader
 
 import org.reflections.Reflections
-import org.reflections.util.{ClasspathHelper, ConfigurationBuilder}
 
 import scala.collection.JavaConversions._
 
@@ -43,8 +40,8 @@ class ServiceExplorer(reflections: Reflections) {
     * @return A list of instantiated services
     */
   def findServicesOfType[TService](
-                                              serviceRootClass: Class[TService]
-                                            ): List[TService] = {
+                                    serviceRootClass: Class[TService]
+                                  ): List[TService] = {
     val noArgsCreator: Class[_ <: TService] => TService =
       serviceClass => serviceClass.newInstance()
 
@@ -65,9 +62,9 @@ class ServiceExplorer(reflections: Reflections) {
     * @return A list of instantiated services
     */
   def findServicesOfType[TService](
-                                              serviceRootClass: Class[TService],
-                                              serviceCreator: Class[_ <: TService] => TService
-                                            ): List[TService] = {
+                                    serviceRootClass: Class[TService],
+                                    serviceCreator: Class[_ <: TService] => TService
+                                  ): List[TService] = {
     reflections
       .getSubTypesOf(serviceRootClass)
       .filter(potentialClass =>

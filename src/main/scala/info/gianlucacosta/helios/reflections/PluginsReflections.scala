@@ -26,16 +26,13 @@ import java.net.URLClassLoader
 import org.reflections.Reflections
 import org.reflections.util.{ClasspathHelper, ConfigurationBuilder}
 
-import scala.collection.JavaConversions._
-
 
 object PluginsReflections {
   /**
     * Creates a Reflections object for:
     *
-    * @param internalRootPackage The given root package, which is considered <i>internal</i> - that is,
-    *                            available even when the plugins directory is missing or with no files
-    *
+    * @param internalRootPackage    The given root package, which is considered <i>internal</i> - that is,
+    *                               available even when the plugins directory is missing or with no files
     * @param pluginsDirectoryOption an optional (flat) directory containing plugin JAR files
     *
     */
@@ -63,7 +60,7 @@ object PluginsReflections {
       new ConfigurationBuilder()
         .addClassLoader(reflectionsClassLoader)
         .addUrls(ClasspathHelper.forPackage(internalRootPackage))
-        .addUrls(externalJarFiles.map(_.toURI.toURL):_*)
+        .addUrls(externalJarFiles.map(_.toURI.toURL): _*)
 
     new Reflections(configuration)
   }

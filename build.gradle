@@ -46,9 +46,12 @@ apply plugin: 'info.gianlucacosta.aurora'
 
 group = 'info.gianlucacosta.helios'
 archivesBaseName = 'helios-reflection'
-version = '1.0-SNAPSHOT'
+version = '1.0'
+
 
 description = 'Scala library of reflection utilities'
+
+ext.facebookPage = "https://www.facebook.com/Helios-206962992779275"
 
 
 
@@ -84,7 +87,6 @@ aurora {
         ]
     }
 }
-
 
 
 
