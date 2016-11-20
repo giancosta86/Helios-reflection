@@ -1,4 +1,4 @@
-/*§
+/*^
   ===========================================================================
   Helios - Reflection
   ===========================================================================
@@ -30,51 +30,11 @@ import org.reflections.util.{ClasspathHelper, ConfigurationBuilder}
 import scala.collection.JavaConversions._
 
 /**
-  * Discovers services from both the current ClassLoader and the JAR files
-  * within a directory.
-  *
-  * For performance reasons, files and reflection information are cached upon creation;
-  * should the external files change, a new instance must be created.
-  *
-  * @param externalDirectoryOption The directory whose JAR files contain external services.
-  *                                If None, only internal services will be scanned.
+  * Discovers services from the given Reflections object
   */
-class ServiceExplorer(
-                       externalDirectoryOption: Option[File]
-                     ) {
-  private val externalJarFiles: Array[File] =
-    externalDirectoryOption
-      .map(externalDirectory => {
-        if (externalDirectory.isDirectory)
-          externalDirectory
-            .listFiles()
-            .filter(_.getName.toLowerCase.endsWith(".jar"))
-        else
-          Array[File]()
-      })
-      .getOrElse(
-        Array[File]()
-      )
-
-
-  private val reflectionsClassLoader = new URLClassLoader(
-    externalJarFiles.map(_.toURI.toURL),
-    getClass.getClassLoader
-  )
-
-
-  private val reflections: Reflections = {
-    val configuration =
-      new ConfigurationBuilder()
-        .addClassLoader(reflectionsClassLoader)
-        .setUrls(ClasspathHelper.forClassLoader(reflectionsClassLoader))
-
-    new Reflections(configuration)
-  }
-
-
+class ServiceExplorer(reflections: Reflections) {
   /**
-    * Returns instantiated services from both the internal context and the external JAR files.
+    * Returns instantiated services after discovering them.
     *
     * Non-abstract service classes will be instantiated using the default (no-args) constructor.
     *
@@ -96,7 +56,7 @@ class ServiceExplorer(
 
 
   /**
-    * Returns instantiated services from both the internal context and the external JAR files.
+    * Returns instantiated services after discovering them.
     *
     * @param serviceRootClass The root class (or interface) for the service
     * @param serviceCreator   Function receiving a TService subclass and returning an instantiated TService.
